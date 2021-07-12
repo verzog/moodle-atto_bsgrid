@@ -37,6 +37,7 @@ $string['col4'] = '25% Columns';
 $string['col6'] = '16% Columns';
 $string['createbsgrid'] = 'Create bsgrid';
 $string['pluginname'] = 'Bootstrap Grid';
+$string['privacy:no_data_reason'] = 'This plugin does not store any user data';
 $string['settings'] = 'bsgrid (Atto)';
 $string['browse'] = 'Browse';
 $string['visible'] = 'Visible';
