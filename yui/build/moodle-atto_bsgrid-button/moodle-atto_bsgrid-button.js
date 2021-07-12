@@ -156,6 +156,7 @@ Y.namespace('M.atto_bsgrid').Button = Y.Base.create('button', Y.M.editor_atto.Ed
       });
     }, this);
 
+    this.editor.delegate('dblclick', this._handleDblClick, '.atto_bsgrid', this);
   },
 
   /**
@@ -230,7 +231,33 @@ Y.namespace('M.atto_bsgrid').Button = Y.Base.create('button', Y.M.editor_atto.Ed
     this.get('host').insertContentAtFocusPoint(templates[templateName].template);
     this.markUpdated();
 
+  },
+
+  /**
+   * Handle a double click on a bsgrid layout.
+   *
+   * Double clicking inside a column should not select the column to be replaced. If raw text is not selected,
+   * attempt to force the first paragraph text to be selected.
+   *
+   * @method _handleDblClick
+   * @private
+   */
+  _handleDblClick: function() {
+    var selection = window.getSelection();
+    if (selection.anchorNode.nodeType !== Node.TEXT_NODE) {
+      // The selection range should be moved from the outer div to the inner paragraph. This assumes the structure
+      // <div><div><p>text</p></div>[...more columns]</div> as defined in this object.
+      var p = selection.anchorNode.children[selection.anchorOffset].children[0];
+      var text = p.childNodes[0];
+      if (text === undefined || text.nodeType !== Node.TEXT_NODE) {
+        // Can't find paragraph where we expected it, so do nothing.
+        return;
+      }
+      // Replace the range of the current selection with text only.
+      selection.setBaseAndExtent(text, 0, text, text.length);
+    }
   }
+
 }, { ATTRS: {
   enabled_templates: {
     values: ['col2','col3','col1x3','col3x1','col4','col6']
