@@ -156,7 +156,13 @@ Y.namespace('M.atto_bsgrid').Button = Y.Base.create('button', Y.M.editor_atto.Ed
       });
     }, this);
 
+    // Handle double and triple clicks to contain to text node.
     this.editor.delegate('dblclick', this._handleDblClick, '.atto_bsgrid', this);
+    this.editor.delegate('click', function(event) {
+      if (event._event.detail === 3) {
+        this._handleDblClick();
+      }
+    }, '.atto_bsgrid', this);
   },
 
   /**
@@ -244,16 +250,25 @@ Y.namespace('M.atto_bsgrid').Button = Y.Base.create('button', Y.M.editor_atto.Ed
    */
   _handleDblClick: function() {
     var selection = window.getSelection();
+    var text = null;
     if (selection.anchorNode.nodeType !== Node.TEXT_NODE) {
       // The selection range should be moved from the outer div to the inner paragraph. This assumes the structure
       // <div><div><p>text</p></div>[...more columns]</div> as defined in this object.
-      var p = selection.anchorNode.children[selection.anchorOffset].children[0];
-      var text = p.childNodes[0];
-      if (text === undefined || text.nodeType !== Node.TEXT_NODE) {
+      var anchor = selection.anchorNode;
+      if (anchor.tagName === "DIV") {
+        text = anchor.getElementsByTagName("p")[selection.focusOffset - 1].childNodes[0];
+      } else if (anchor.tagName === "P") {
+        text = anchor.childNodes[0];
+      }
+      if (text === undefined || text === null || text.nodeType !== Node.TEXT_NODE) {
         // Can't find paragraph where we expected it, so do nothing.
         return;
       }
       // Replace the range of the current selection with text only.
+      selection.setBaseAndExtent(text, 0, text, text.length);
+    } else if (selection.anchorNode.nodeType === Node.TEXT_NODE && selection.focusNode.nodeType !== Node.TEXT_NODE) {
+      // We only want to select the text, so if the selection goes beyond, then we want to refocus.
+      text = selection.anchorNode;
       selection.setBaseAndExtent(text, 0, text, text.length);
     }
   }
