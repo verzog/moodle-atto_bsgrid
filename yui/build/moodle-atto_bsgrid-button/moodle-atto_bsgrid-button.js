@@ -156,7 +156,13 @@ Y.namespace('M.atto_bsgrid').Button = Y.Base.create('button', Y.M.editor_atto.Ed
       });
     }, this);
 
+    // Handle double and triple clicks to contain to text node.
     this.editor.delegate('dblclick', this._handleDblClick, '.atto_bsgrid', this);
+    this.editor.delegate('click', function(event) {
+      if (event._event.detail === 3) {
+        this._handleDblClick();
+      }
+    }, '.atto_bsgrid', this);
   },
 
   /**
