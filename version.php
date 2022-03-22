@@ -24,10 +24,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022032201;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2022032202;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2013110500;        // Requires this Moodle version.
 $plugin->component = 'atto_bsgrid';  // Full name of the plugin (used for diagnostics).
 $plugin->maturity  = MATURITY_BETA;
 // Human readable version information
-$plugin->release   = '2.0.0 (Build 22022032201)';
+$plugin->release   = '2.0.0 (Build 22022032202)';
 
