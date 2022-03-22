@@ -33,10 +33,3 @@ a.bsgridtemplateicon {
     box-shadow: 0px 2px 2px 0px rgba(100,100,100,0.1);
   */
 }
-/* fix for row-fluid */
-   .row-FLUID {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-}
